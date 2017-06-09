@@ -23,7 +23,7 @@ abstract public class DatabaseObject {
     protected void updateParam(String name, Object param) throws SQLException {
         executeSQLWith(getConnection(),
                 String.format("UPDATE %s SET %s = ? WHERE id = ?",
-                        getTableNameWithColumns(), name),
+                        getTableName(), name),
                 new Object[]{param, getId()});
     }
 

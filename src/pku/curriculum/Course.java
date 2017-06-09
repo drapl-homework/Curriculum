@@ -1,16 +1,12 @@
 package pku.curriculum;
 
-import pku.curriculum.utils.CourseTime;
 import pku.curriculum.utils.DatabaseObject;
 import pku.curriculum.utils.SQLUtils;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.util.ArrayList;
+import java.sql.*;
+import java.time.Instant;
+import java.time.ZonedDateTime;
 import java.util.List;
-import java.util.Set;
 
 /**
  * Created by draplater on 17-6-8.
@@ -70,17 +66,17 @@ public class Course extends DatabaseObject {
         return id;
     }
 
-    public Course setId(String id) {
-        this.id = id;
-        return this;
-    }
-
     public String getName() {
         return name;
     }
 
     public Course setName(String name) {
         this.name = name;
+        try {
+            updateParam("name", name);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
         return this;
     }
 
@@ -90,6 +86,11 @@ public class Course extends DatabaseObject {
 
     public Course setCredit(double credit) {
         this.credit = credit;
+        try {
+            updateParam("credit", credit);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
         return this;
     }
 
@@ -99,6 +100,11 @@ public class Course extends DatabaseObject {
 
     public Course setScore(double score) {
         this.score = score;
+        try {
+            updateParam("score", score);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
         return this;
     }
 
@@ -108,6 +114,11 @@ public class Course extends DatabaseObject {
 
     public Course setLocation(String location) {
         this.location = location;
+        try {
+            updateParam("location", location);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
         return this;
     }
 
@@ -117,6 +128,11 @@ public class Course extends DatabaseObject {
 
     public Course setType(String type) {
         this.type = type;
+        try {
+            updateParam("type", type);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
         return this;
     }
 
@@ -149,16 +165,80 @@ public class Course extends DatabaseObject {
     }
 
     public List<CourseTime> getTimes() {
-        return SQLUtils.getAll(connection, CourseTime.tableName, CourseTime::fromResultSet);
+        String sql = String.format("SELECT * from %s WHERE course_id = \"%s\"", CourseTime.tableName, id);
+        return SQLUtils.getAllWithSQL(connection, sql, CourseTime::fromResultSet);
     }
 
-    /*
     public Course addTime(CourseTime time) {
-        if(!times.contains(time)) {
-            times.add(time);
-            // database actions
+        try {
+            SQLUtils.insert(connection, CourseTime.getTableNameWithColumnsStatic(), id,
+                    time.getDayOfWeek(), time.getStartHour(), time.getStartMinute(),
+                    time.getEndHour(), time.getEndMinute());
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
         return this;
     }
-    */
+
+    public Course delTime(CourseTime time) {
+        try {
+            SQLUtils.executeSQLWith(connection,
+                    String.format("DELETE FROM %s WHERE course_id = ? AND day_of_week = ? " +
+                                    "AND start_hour = ? AND start_minute = ? AND end_hour = ? " +
+                            "AND end_minute = ?", time.getTableName()),
+                    new Object[]{id, time.getDayOfWeek(), time.getStartHour(), time.getStartMinute(),
+                            time.getEndHour(), time.getEndMinute()});
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return this;
+    }
+
+    public List<Teacher> getTeachers() {
+        String sql = String.format("SELECT teacher_id AS id, name, mail, tel, office from course_teacher " +
+                "INNER JOIN %s ON teacher_id = teacher.id WHERE course_id = ?", Teacher.tableName);
+        try(PreparedStatement stmt = connection.prepareStatement(sql)) {
+            stmt.setString(1, id);
+            return SQLUtils.getAllWithStatement(connection, stmt, Teacher::fromResultSet);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    public Course addTeacher(Teacher teacher) {
+        try {
+            SQLUtils.insert(connection, "course_teacher", id, teacher.getId());
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return this;
+    }
+
+    public Course delTeacher(Teacher teacher) {
+        try {
+            SQLUtils.executeSQLWith(connection,
+                    "DELETE FROM course_teacher WHERE course_id = ? AND teacher_id = ?",
+                    new Object[]{id, teacher.getId()});
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return this;
+    }
+
+    public List<Task> getTasks() {
+        String sql = String.format("SELECT * FROM %s WHERE course_id = ?", Task.tableName);
+        try(PreparedStatement stmt = connection.prepareStatement(sql)) {
+            stmt.setString(1, id);
+            return SQLUtils.getAllWithStatement(connection, stmt,
+                    (connection, rs) -> Task.fromResultSet(connection, this, rs));
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    public Task addTask(String id, String name, String content, ZonedDateTime end_time, int status) {
+        return Task.addTask(connection, id, this, name, content, end_time, status);
+    }
 }

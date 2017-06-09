@@ -1,6 +1,4 @@
-package pku.curriculum.utils;
-
-import pku.curriculum.Course;
+package pku.curriculum;
 
 import java.sql.Connection;
 import java.sql.ResultSet;
@@ -13,30 +11,34 @@ public class CourseTime {
     private static String days = "零一二三四五六日";
 
     public static String tableName = "course_time";
-    public static String columns = "course_id, day_of_week, start_hour, end_hour, start_minute, end_minute";
+    public static String columns = "course_id, day_of_week, start_hour, start_minute, end_hour, end_minute";
     private int dayOfWeek;
     private int startHour;
     private int endHour;
     private int startMinute;
     private int endMinute;
 
-    public CourseTime(int dayOfWeek, int startHour, int endHour, int startMinute, int endMinute) {
+    public CourseTime(int dayOfWeek, int startHour, int startMinute, int endHour, int endMinute) {
         this.dayOfWeek = dayOfWeek;
         this.startHour = startHour;
-        this.endHour = endHour;
         this.startMinute = startMinute;
+        this.endHour = endHour;
         this.endMinute = endMinute;
     }
 
     public static CourseTime fromResultSet(Connection connection, ResultSet rs) {
         try {
             return new CourseTime(rs.getInt("day_of_week"), rs.getInt("start_hour"),
-                    rs.getInt("end_hour"), rs.getInt("start_minute"), rs.getInt("end_minute"));
+                    rs.getInt("start_minute"), rs.getInt("end_hour"), rs.getInt("end_minute"));
         } catch (SQLException e) {
             e.printStackTrace();
         }
         return null;
     }
+
+    public static String getTableNameWithColumnsStatic() { return String.format("%s(%s)", tableName, columns); }
+    protected String getTableNameWithColumns() { return getTableNameWithColumnsStatic(); }
+    protected String getTableName() { return tableName; }
 
     public int getDayOfWeek() {
         return dayOfWeek;
@@ -92,5 +94,10 @@ public class CourseTime {
         result = 31 * result + startMinute;
         result = 31 * result + endMinute;
         return result;
+    }
+
+    @Override
+    public String toString() {
+        return String.format("%s %s-%s", getDayofWeekString(), getStartTime(), getEndTime());
     }
 }

@@ -1,9 +1,6 @@
 package pku.curriculum.utils;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -34,18 +31,31 @@ public class SQLUtils {
                 new Object[]{param, id});
     }
 
-    public static <T> List<T> getAll(Connection connection, String tableName, BiFunction<Connection, ResultSet, T> factory) {
+    public static <T> List<T> getAllWithStatement(Connection connection, PreparedStatement statement, BiFunction<Connection, ResultSet, T> factory) {
         List<T> ret = new ArrayList<>();
-        String sql = "SELECT * from " + tableName;
-        try(PreparedStatement stmt = connection.prepareStatement(sql)) {
-            ResultSet rs = stmt.executeQuery();
+        try {
+            ResultSet rs = statement.executeQuery();
             while(rs.next()) {
                 ret.add(factory.apply(connection, rs));
             }
         } catch (SQLException e) {
             e.printStackTrace();
-            System.exit(0);
         }
         return ret;
+    }
+
+    public static <T> List<T> getAllWithSQL(Connection connection, String sql, BiFunction<Connection, ResultSet, T> factory) {
+        try {
+            PreparedStatement stmt = connection.prepareStatement(sql);
+            return getAllWithStatement(connection, stmt, factory);
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    public static <T> List<T> getAll(Connection connection, String tableName, BiFunction<Connection, ResultSet, T> factory) {
+        String sql = "SELECT * from " + tableName;
+        return getAllWithSQL(connection, sql, factory);
     }
 }

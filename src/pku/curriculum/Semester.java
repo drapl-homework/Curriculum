@@ -26,8 +26,7 @@ public class Semester extends DatabaseObject {
         this.endDate = end;
     }
 
-    public static Semester addNewSemester(Connection connection, String id, String name, Date start, Date end) {
-        Semester empty = null;
+    static Semester addNewSemester(Connection connection, String id, String name, Date start, Date end) {
         try {
             //noinspection ConstantConditions
             SQLUtils.insert(connection, getTableNameWithColumnsStatic(),
@@ -96,7 +95,7 @@ public class Semester extends DatabaseObject {
     public Semester setStartDate(Date startDate) {
         this.startDate = startDate;
         try {
-            updateParam("start", startDate);
+            updateParam("start", startDate.toString());
         } catch (SQLException e) {
             e.printStackTrace();
             System.exit(1);
@@ -111,7 +110,7 @@ public class Semester extends DatabaseObject {
     public Semester setEndDate(Date endDate) {
         this.endDate = endDate;
         try {
-            updateParam("end", endDate);
+            updateParam("end", endDate.toString());
         } catch (SQLException e) {
             e.printStackTrace();
             System.exit(1);
