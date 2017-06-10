@@ -54,8 +54,7 @@ public class Cheif {
     Storage db = new Storage("jdbc:sqlite:" + databaseFile, !new File(databaseFile).exists());
     List<Semester> semesters = db.getAllSementers();
     Semester semester0 = semesters.get(0);
-	List<Course> courseList=semester0.getAllCourses();
-	
+
 	/**
 	 * Launch the application.
 	 */
@@ -234,8 +233,13 @@ public class Cheif {
 			
 			
 			//test//
-			addClassBar("物理",1,2.0/12,4.0/12);
-			addClassBar("数学",3,9.0/12,12.0/12);
+            for(Course course: semester0.getAllCourses()) {
+            	for(CourseTime time: course.getTimes()) {
+					addClassBar(course.getName(), time.getDayOfWeek(),
+							(time.getStartHour() - 9) / 12.0,
+							(time.getEndHour() - 9) / 12.0);
+				}
+			}
 			//
 			
 
