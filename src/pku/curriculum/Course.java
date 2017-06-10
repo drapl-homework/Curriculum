@@ -172,7 +172,7 @@ public class Course extends DatabaseObject {
     public Course addTime(CourseTime time) {
         try {
             SQLUtils.insert(connection, CourseTime.getTableNameWithColumnsStatic(), id,
-                    time.getDayOfWeek(), time.getStartHour(), time.getStartMinute(),
+                    time.getDayOfWeek(), time.getAlternateWeek(), time.getStartHour(), time.getStartMinute(),
                     time.getEndHour(), time.getEndMinute());
         } catch (SQLException e) {
             e.printStackTrace();

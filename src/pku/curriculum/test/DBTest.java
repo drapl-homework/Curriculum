@@ -65,7 +65,7 @@ public class DBTest {
         System.out.println(course.getTimes());
 
         // 增加上课时间
-        CourseTime newTime = new CourseTime(2, 14, 00, 15, 00);
+        CourseTime newTime = new CourseTime(2, 1, 14, 00, 15, 00);
         course.addTime(newTime);
         System.out.println(course.getTimes());
 

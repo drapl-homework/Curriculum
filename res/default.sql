@@ -29,14 +29,15 @@ INSERT INTO course(id, semester_id, name, credit, score, location, type) VALUES(
 CREATE TABLE course_time(
   course_id VARCHAR(36),
   day_of_week INTEGER,
+  alternate_week INTEGER,
   start_hour INTEGER,
   start_minute INTEGER,
   end_hour INTEGER,
   end_minute INTEGER,
-  PRIMARY KEY(course_id, day_of_week, start_hour, start_minute, end_hour, end_minute)
+  PRIMARY KEY(course_id, day_of_week, alternate_week, start_hour, start_minute, end_hour, end_minute)
 );
 
-INSERT INTO course_time(course_id, day_of_week, start_hour, start_minute, end_hour, end_minute) VALUES("aaa", 1, 22, 00, 23, 00);
+INSERT INTO course_time(course_id, day_of_week, alternate_week, start_hour, start_minute, end_hour, end_minute) VALUES("aaa", 1, 0, 22, 00, 23, 00);
 
 CREATE TABLE teacher(
   id varchar(36) PRIMARY KEY NOT NULL,

@@ -9,17 +9,24 @@ import java.sql.SQLException;
  */
 public class CourseTime {
     private static String days = "零一二三四五六日";
+    private static String[] alternateWeekString = {"每周", "单周", "双周"};
 
     public static String tableName = "course_time";
-    public static String columns = "course_id, day_of_week, start_hour, start_minute, end_hour, end_minute";
+    public static String columns = "course_id, day_of_week, alternate_week, start_hour, start_minute, end_hour, end_minute";
     private int dayOfWeek;
+    private int alternateWeek;
     private int startHour;
     private int endHour;
     private int startMinute;
     private int endMinute;
 
     public CourseTime(int dayOfWeek, int startHour, int startMinute, int endHour, int endMinute) {
+        this(dayOfWeek, 0, startHour, startMinute, endHour, endMinute);
+    }
+
+    public CourseTime(int dayOfWeek, int alternateWeek, int startHour, int startMinute, int endHour, int endMinute) {
         this.dayOfWeek = dayOfWeek;
+        this.alternateWeek = alternateWeek;
         this.startHour = startHour;
         this.startMinute = startMinute;
         this.endHour = endHour;
@@ -28,8 +35,9 @@ public class CourseTime {
 
     public static CourseTime fromResultSet(Connection connection, ResultSet rs) {
         try {
-            return new CourseTime(rs.getInt("day_of_week"), rs.getInt("start_hour"),
-                    rs.getInt("start_minute"), rs.getInt("end_hour"), rs.getInt("end_minute"));
+            return new CourseTime(rs.getInt("day_of_week"), rs.getInt("alternate_week"),
+                    rs.getInt("start_hour"), rs.getInt("start_minute"),
+                    rs.getInt("end_hour"), rs.getInt("end_minute"));
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -42,6 +50,10 @@ public class CourseTime {
 
     public int getDayOfWeek() {
         return dayOfWeek;
+    }
+
+    public int getAlternateWeek() {
+        return alternateWeek;
     }
 
     public int getStartHour() {
@@ -61,7 +73,7 @@ public class CourseTime {
     }
 
     public String getDayofWeekString() {
-        return "星期" + days.charAt(this.dayOfWeek);
+        return alternateWeekString[this.alternateWeek] + "星期" + days.charAt(this.dayOfWeek);
     }
 
     public String getStartTime() {
@@ -80,6 +92,7 @@ public class CourseTime {
         CourseTime that = (CourseTime) o;
 
         if (dayOfWeek != that.dayOfWeek) return false;
+        if (alternateWeek != that.alternateWeek) return false;
         if (startHour != that.startHour) return false;
         if (endHour != that.endHour) return false;
         if (startMinute != that.startMinute) return false;
@@ -89,6 +102,7 @@ public class CourseTime {
     @Override
     public int hashCode() {
         int result = dayOfWeek;
+        result = 31 * result + alternateWeek;
         result = 31 * result + startHour;
         result = 31 * result + endHour;
         result = 31 * result + startMinute;
