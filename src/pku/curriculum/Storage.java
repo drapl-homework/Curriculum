@@ -1,6 +1,6 @@
-package pku.curriculum;
+package curriculum;
 
-import pku.curriculum.utils.SQLUtils;
+import curriculum.utils.SQLUtils;
 
 import java.io.IOException;
 import java.net.URISyntaxException;

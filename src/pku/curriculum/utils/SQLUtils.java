@@ -1,4 +1,4 @@
-package pku.curriculum.utils;
+package curriculum.utils;
 
 import java.sql.*;
 import java.util.ArrayList;

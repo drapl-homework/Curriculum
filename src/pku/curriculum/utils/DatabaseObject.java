@@ -1,10 +1,10 @@
-package pku.curriculum.utils;
+package curriculum.utils;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
-import static pku.curriculum.utils.SQLUtils.executeSQLWith;
+import static curriculum.utils.SQLUtils.executeSQLWith;
 
 /**
  * Created by draplater on 17-6-8.

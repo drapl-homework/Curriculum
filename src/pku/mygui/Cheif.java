@@ -1,5 +1,7 @@
 package mygui;
 
+import curriculum.*;
+
 import java.awt.EventQueue;
 
 import javax.swing.JFrame;
@@ -22,6 +24,7 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.io.File;
 import java.util.Vector;
 import java.awt.event.ActionEvent;
 import javax.swing.BoxLayout;
@@ -32,6 +35,8 @@ import java.awt.Dimension;
 import java.awt.Color;
 import javax.swing.JDialog;
 import javax.swing.JTextField;
+import java.util.ArrayList;
+import java.util.List;
 
 
 import java.awt.CardLayout;
@@ -43,6 +48,13 @@ public class Cheif {
 	private JFrame frame;
 	private CardLayout card;
 	private JPanel pnl_main;
+	
+	// 获取学期和课程
+	String databaseFile = "data.sqlite";
+    Storage db = new Storage("jdbc:sqlite:" + databaseFile, !new File(databaseFile).exists());
+    List<Semester> semesters = db.getAllSementers();
+    Semester semester0 = semesters.get(0);
+	List<Course> courseList=semester0.getAllCourses();
 	
 	/**
 	 * Launch the application.
@@ -79,6 +91,16 @@ public class Cheif {
 		JPanel pnl_info = new JPanel();
 		pnl_info.setBackground(new Color(127, 255, 212));
 		pnl_info.setBounds(0, 0, 180, 561);
+		pnl_info.setLayout(null);
+		JLabel lb_welcome = new JLabel("Welcome to SyllabusPro!");
+		lb_welcome.setBounds(10,80,160,40);
+		pnl_info.add(lb_welcome);
+		JLabel lb_name = new JLabel("张三"); //test
+		lb_name.setBounds(70,160,40,40);
+		pnl_info.add(lb_name);
+		JLabel lb_num = new JLabel("1300013000"); //test
+		lb_num.setBounds(40,200,80,40);
+		pnl_info.add(lb_num);
 		frame.getContentPane().add(pnl_info);
 		
 		JPanel pnl_btn = new JPanel();
@@ -132,7 +154,6 @@ public class Cheif {
 	}
 	
 	
-	
 	////////////////
 	/////Course/////
 	////////////////	
@@ -152,21 +173,42 @@ public class Cheif {
 			add(pnl_m);
 			
 			JPanel pnl_label=new JPanel();
+			pnl_label.setLayout(null);
 			pnl_label.setBounds(width, 0, width*14, 40);
 			pnl_label.setBackground(Color.YELLOW);
 			pnl_m.add(pnl_label);
+			String[] days={"一","二","三","四","五","六","日"};
+			JLabel[] lb_days = new JLabel[7];
+			for(int i=0; i<7; i++){
+				lb_days[i] = new JLabel("周"+days[i]);
+				lb_days[i].setBounds(width*2*i+18,0,width*2,40);
+				pnl_label.add(lb_days[i]);
+			}
 			
 			JPanel pnl_time=new JPanel();
+			pnl_time.setLayout(null);
 			pnl_time.setBounds(0, 40, width, 400);
 			pnl_time.setBackground(Color.PINK);
+			JLabel[] lb_hours = new JLabel[14];
+			String[] hours={"9:00  -","10:00-","11:00-","12:00-","13:00-","14:00-","15:00-","16:00-",
+					"17:00-","18:00-","19:00-","20:00-","21:00-","22:00-"};
+			for(int i=0; i<14; i++){
+				lb_hours[i]=new JLabel(hours[i]);
+				lb_hours[i].setBounds(0,30*i+15,width,30);
+				pnl_time.add(lb_hours[i]);
+			}
+			
+			
 			pnl_m.add(pnl_time);
 			
 			pnl_days=new JPanel[7];
+			
 			for(int i=0;i<7;i++){
 				pnl_days[i]=new JPanel();
 				pnl_days[i].setLayout(null);
 				pnl_days[i].setBounds(width+width*2*i, 40, width*2, 400);
 				pnl_days[i].setBackground(new Color(250-10*i, 255, 250-10*i));
+
 				pnl_m.add(pnl_days[i]);
 			}
 			
@@ -178,7 +220,7 @@ public class Cheif {
 			JButton btn_new=new JButton("新增课程");
 			btn_new.addActionListener(new ActionListener(){
 				public void actionPerformed(ActionEvent e){
-					CourseAdd new_crs=new CourseAdd();
+					CourseAdd new_crs=new CourseAdd(semester0);
 					new_crs.setModal(true);
 					new_crs.setAlwaysOnTop(true);
 					new_crs.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
@@ -539,6 +581,7 @@ public class Cheif {
 			pnl_dat_l=new JPanel();
 			pnl_dat_l.setLayout(new FlowLayout(FlowLayout.LEFT,0,0));
 			
+			
 			//test//
 			JLabel lb_l=new JLabel("平均绩点3.99");
 			lb_l.setPreferredSize(new Dimension(360,30));
@@ -587,6 +630,7 @@ public class Cheif {
 			}
 			pnl_dat_l.setPreferredSize(new Dimension(360, height+a));
 		}
+	
 		
 		private class Data extends JPanel{
 			

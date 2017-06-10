@@ -1,7 +1,7 @@
-package pku.curriculum;
+package curriculum;
 
-import pku.curriculum.utils.DatabaseObject;
-import pku.curriculum.utils.SQLUtils;
+import curriculum.utils.DatabaseObject;
+import curriculum.utils.SQLUtils;
 
 import java.sql.*;
 import java.time.Instant;

@@ -1,8 +1,8 @@
-package pku.curriculum;
+package curriculum;
 
 import javafx.scene.chart.PieChart;
-import pku.curriculum.utils.DatabaseObject;
-import pku.curriculum.utils.SQLUtils;
+import curriculum.utils.DatabaseObject;
+import curriculum.utils.SQLUtils;
 
 import java.sql.Connection;
 import java.sql.ResultSet;

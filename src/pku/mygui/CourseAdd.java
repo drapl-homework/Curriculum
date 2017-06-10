@@ -1,5 +1,9 @@
 package mygui;
 
+import curriculum.Semester;
+import curriculum.Course;
+import curriculum.CourseTime;
+
 import java.util.*;
 
 import javax.swing.JFrame;
@@ -27,11 +31,13 @@ public class CourseAdd extends JDialog {
 	private final JPanel contentPanel = new JPanel();
 	private JPanel pnl_tl;
 	private int time_cnt;
-
+	private Semester semester0;
 	/**
 	 * Create the dialog.
 	 */
-	public CourseAdd() {
+	public CourseAdd(Semester semester) {
+		semester0 = semester;
+		
 		setBounds(100, 100, 537, 339);
 		getContentPane().setLayout(new BorderLayout());
 		contentPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
@@ -52,7 +58,7 @@ public class CourseAdd extends JDialog {
 		pnl_tl.setLayout(new FlowLayout(FlowLayout.LEFT,0,0));
 		
 		JScrollPane spl_t = new JScrollPane(pnl_tl);
-		spl_t.setBounds(97, 125, 400, 110);
+		spl_t.setBounds(97, 160, 400, 110);
 		contentPanel.add(spl_t);
 		
 		time_cnt=1;
@@ -60,9 +66,11 @@ public class CourseAdd extends JDialog {
 		pnl_tl.setPreferredSize(new Dimension(278,18));
 		
 		JButton btn_add_time = new JButton("添加");
-		btn_add_time.setBounds(10, 125, 74, 23);
+		btn_add_time.setBounds(10, 160, 74, 23);
 		btn_add_time.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e){
+				
+				
 				time_cnt+=1;
 				pnl_tl.add(new TimePanel());
 				pnl_tl.setPreferredSize(new Dimension(350,18*time_cnt));
@@ -89,6 +97,15 @@ public class CourseAdd extends JDialog {
 		contentPanel.add(txt_credit);
 		txt_credit.setColumns(50);
 		
+		JLabel lb_category = new JLabel("类型");
+		lb_category.setBounds(30, 110, 54, 15);
+		contentPanel.add(lb_category);
+		
+		JComboBox combo_category = new JComboBox();
+		combo_category.setModel(new DefaultComboBoxModel(new String[] {"专业必修","专业选修","全校必修","英语","体育","通选A", "通选B", "通选C", "通选D", "通选E", "通选F", "公选"}));
+		combo_category.setBounds(97, 110, 193, 18);
+		contentPanel.add(combo_category);
+		
 		
 		{
 			JPanel buttonPane = new JPanel();
@@ -100,6 +117,8 @@ public class CourseAdd extends JDialog {
 					public void actionPerformed(ActionEvent e){
 						
 						///////////////add/////////////
+						Course course = semester0.addCourse(UUID.randomUUID().toString(), txt_title.getText(), 
+								Double.parseDouble(txt_credit.getText()), 100, txt_local.getText(), combo_category.getSelectedItem().toString());
 						
 						CourseAdd.this.dispose();
 					}

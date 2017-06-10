@@ -1,6 +1,6 @@
-package pku.curriculum.test;
+package curriculum.test;
 
-import pku.curriculum.*;
+import curriculum.*;
 
 import java.io.File;
 import java.nio.file.Files;

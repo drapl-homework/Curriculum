@@ -1,4 +1,4 @@
-package pku.curriculum;
+package curriculum;
 
 import java.sql.Connection;
 import java.sql.ResultSet;
