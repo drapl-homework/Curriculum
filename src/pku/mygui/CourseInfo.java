@@ -42,6 +42,10 @@ public class CourseInfo extends JDialog {
 	private int tsk_cnt;
 	private Course course;
 	
+	private List<Teacher> teacherList;
+	private List<Task> taskList;
+	private List<CourseTime> coursetimes;
+	
 
 	/**
 	 * Create the dialog.
@@ -125,7 +129,7 @@ public class CourseInfo extends JDialog {
 		contentPanel.add(spl_t);
 		
 		time_cnt=0;
-		List<CourseTime> coursetimes = course.getTimes();
+		coursetimes = course.getTimes();
 		for(CourseTime coursetime:coursetimes)
 		{
 			time_cnt+=1;
@@ -160,13 +164,7 @@ public class CourseInfo extends JDialog {
 		spl_p.setBounds(97, 280, 400, 80);
 		contentPanel.add(spl_p);
 		
-		List<Teacher> teacherList = course.getTeachers();
-		pro_cnt=teacherList.size();
-		for(int i=0; i<pro_cnt; i++){
-			pnl_pl.add(new ProPanel(teacherList.get(i)));
-			pnl_pl.setPreferredSize(new Dimension(350,18*pro_cnt));
-		}
-		pnl_pl.updateUI();
+		paintTeacher();
 		
 		JButton btn_add_pro = new JButton("添加老师");
 		btn_add_pro.setMargin(new Insets(0, 0, 0, 0));
@@ -186,6 +184,8 @@ public class CourseInfo extends JDialog {
 					pnl_pl.setPreferredSize(new Dimension(350,18*pro_cnt));
 					pnl_pl.updateUI();
 				}  */
+				
+				paintTeacher();
 				pnl_pl.updateUI();
 			}
 		});
@@ -199,13 +199,7 @@ public class CourseInfo extends JDialog {
 		spl_k.setBounds(97, 370, 400, 80);
 		contentPanel.add(spl_k);
 		
-		List<Task> taskList = course.getTasks();
-		tsk_cnt=taskList.size();
-		for(int i=0; i<tsk_cnt; i++){
-			pnl_kl.add(new TaskPanel(taskList.get(i)));
-			pnl_kl.setPreferredSize(new Dimension(350,18*pro_cnt));
-		}
-		pnl_kl.updateUI();
+		paintTask();
 		
 		JButton btn_add_tsk = new JButton("添加任务");
 		btn_add_tsk.setMargin(new Insets(0, 0, 0, 0));
@@ -218,8 +212,7 @@ public class CourseInfo extends JDialog {
 				info_tsk.setAlwaysOnTop(true);
 				info_tsk.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
 				info_tsk.setVisible(true);
-				
-				
+
 				
 		/*		if (info_tsk.showtxt!=null){
 					tsk_cnt+=1;
@@ -227,6 +220,8 @@ public class CourseInfo extends JDialog {
 					pnl_kl.setPreferredSize(new Dimension(350,18*pro_cnt));
 					pnl_kl.updateUI();
 				} */
+				paintTask();
+				pnl_kl.updateUI();
 			}
 		});
 		contentPanel.add(btn_add_tsk);
@@ -247,7 +242,7 @@ public class CourseInfo extends JDialog {
 						course.setCredit(Double.parseDouble(txt_credit.getText()));
 						
 						//delete all course time and add all
-						//List<CourseTime> coursetimes = course.getTimes();
+						coursetimes = course.getTimes();
 						for(CourseTime coursetime : coursetimes)
 						{
 							course.delTime(coursetime);
@@ -277,7 +272,7 @@ public class CourseInfo extends JDialog {
 				JButton delButton = new JButton("Delete");
 				delButton.addActionListener(new ActionListener(){
 					public void actionPerformed(ActionEvent e){
-						
+
 						//////////del//////////////
 						course.deleteFromDatabase();
 						
@@ -296,6 +291,26 @@ public class CourseInfo extends JDialog {
 				});
 				buttonPane.add(cancelButton);
 			}
+		}
+	}
+	
+	private void paintTeacher(){
+		teacherList = course.getTeachers();
+		pro_cnt=teacherList.size();
+		pnl_pl.removeAll();
+		for(int i=0; i<pro_cnt; i++){
+			pnl_pl.add(new ProPanel(teacherList.get(i)));
+			pnl_pl.setPreferredSize(new Dimension(350,18*pro_cnt));
+		}
+	}
+	
+	private void paintTask(){
+		taskList = course.getTasks();
+		tsk_cnt=taskList.size();
+		pnl_kl.removeAll();
+		for(int i=0; i<tsk_cnt; i++){
+			pnl_kl.add(new TaskPanel(taskList.get(i)));
+			pnl_kl.setPreferredSize(new Dimension(350,18*tsk_cnt));
 		}
 	}
 	
@@ -371,7 +386,6 @@ public class CourseInfo extends JDialog {
 						pnl_tl.setPreferredSize(new Dimension(350,18*time_cnt));
 						pnl_tl.updateUI();
 					}
-					/////////////////
 				}
 			});
 			this.add(btn_del);
@@ -397,8 +411,8 @@ public class CourseInfo extends JDialog {
 					info_pro.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
 					info_pro.setVisible(true);
 					
-					/////更新
-					ProPanel.this.updateUI();
+					paintTeacher();
+					pnl_pl.updateUI();
 				}
 			});
 			this.add(btn_item);
@@ -408,13 +422,11 @@ public class CourseInfo extends JDialog {
 			btn_del.addActionListener(new ActionListener(){
 				public void actionPerformed(ActionEvent e){					
 					teacher.deleteFromDatabase();
-					if (pro_cnt>1){
-						ProPanel.this.setVisible(false);
-						pro_cnt-=1;
-						pnl_pl.setPreferredSize(new Dimension(350,18*pro_cnt));
-						pnl_pl.updateUI();
-					}
-					/////////////////
+					pro_cnt-=1;
+					pnl_pl.setPreferredSize(new Dimension(350,18*pro_cnt));
+					paintTeacher();
+					pnl_pl.updateUI();
+
 				}
 			});
 			this.add(btn_del);
@@ -442,8 +454,8 @@ public class CourseInfo extends JDialog {
 					info_tsk.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
 					info_tsk.setVisible(true);
 					
-					/////更新
-					TaskPanel.this.updateUI();
+					paintTask();
+					pnl_kl.updateUI();
 				}
 			});
 			this.add(btn_item);
@@ -456,8 +468,9 @@ public class CourseInfo extends JDialog {
 					TaskPanel.this.setVisible(false);
 					tsk_cnt-=1;
 					pnl_kl.setPreferredSize(new Dimension(350,18*tsk_cnt));
+					paintTask();
 					pnl_kl.updateUI();
-					/////////////////
+
 				}
 			});
 			this.add(btn_del);
