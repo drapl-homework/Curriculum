@@ -109,18 +109,38 @@ public class Cheif {
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.getContentPane().setLayout(null);
 		
-		JPanel pnl_info = new JPanel();
-		pnl_info.setBackground(new Color(127, 255, 212));
+		JPanel pnl_info = func.getImgPanel("infobar.png");
 		pnl_info.setBounds(0, 0, 180, 561);
 		pnl_info.setLayout(null);
-		JLabel lb_welcome = new JLabel("Welcome to SyllabusPro!");
-		lb_welcome.setBounds(10,80,160,40);
+		
+		JPanel pnl_img=new JPanel(){
+			public void paintComponent(Graphics g){
+				ImageIcon icon=new ImageIcon("./ico/"+"pic.png");
+				g.drawImage(icon.getImage(), 0, 0, null,null);
+			}
+		};
+		pnl_img.setBounds(50, 60, 80, 80);
+		pnl_info.add(pnl_img);
+		
+		JLabel lb_welcome = new JLabel("Welcome to");
+		lb_welcome.setBounds(47,140,160,40);
+		lb_welcome.setFont(new Font("Arial",Font.BOLD,13));
+		lb_welcome.setForeground(Color.WHITE);
 		pnl_info.add(lb_welcome);
-		JLabel lb_name = new JLabel("张三"); //test
-		lb_name.setBounds(70,160,40,40);
+		JLabel lb_welcome2 = new JLabel("SyllabusPro!");
+		lb_welcome2.setBounds(47,155,160,40);
+		lb_welcome2.setFont(new Font("Arial",Font.BOLD,13));
+		lb_welcome2.setForeground(Color.WHITE);
+		pnl_info.add(lb_welcome2);
+		JLabel lb_name = new JLabel("娘口三三"); //test
+		lb_name.setBounds(43,200,90,40);
+		lb_name.setFont(new Font("黑体",Font.BOLD,20));
+		lb_name.setForeground(Color.DARK_GRAY);
 		pnl_info.add(lb_name);
 		JLabel lb_num = new JLabel("1300013000"); //test
-		lb_num.setBounds(40,200,80,40);
+		lb_num.setBounds(47,230,80,40);
+		lb_num.setFont(new Font("Arial",Font.BOLD,13));
+		lb_num.setForeground(Color.DARK_GRAY);
 		pnl_info.add(lb_num);
 		frame.getContentPane().add(pnl_info);
 		
@@ -131,7 +151,7 @@ public class Cheif {
 		
 		card=new CardLayout(0, 0);
 		pnl_main = new JPanel();
-		pnl_main.setBounds(180, 70, 804, 490);
+		pnl_main.setBounds(180, 70, 804, 491);
 		frame.getContentPane().add(pnl_main);
 		pnl_main.setLayout(card);
 		

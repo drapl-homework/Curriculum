@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry excluding="src/pku/curriculum/|src/pku/mygui/|src/pku/|ico/|res/" kind="src" path=""/>
+	<classpathentry kind="src" path="src/pku"/>
+	<classpathentry kind="src" path="ico"/>
+	<classpathentry kind="src" path="res"/>
+	<classpathentry kind="lib" path="libs/jcommon-1.0.23.jar"/>
+	<classpathentry kind="lib" path="libs/jfreechart-1.0.19.jar"/>
+	<classpathentry kind="lib" path="libs/sqlite-jdbc-3.18.0.jar"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry kind="output" path="bin"/>
+</classpath>
