@@ -408,11 +408,13 @@ public class Cheif {
 		//private Semester[] sms_l;
 		private JPanel pnl_sms_l;
 		private JTextField txt_sms;
+		private JTextField txt_start;
+		private JTextField txt_end;
 		private Vector<Semester0> sms_l;
 
 		public SemesterPanel() {
 			setLayout(null);
-			txt_sms=new JTextField("新学期");
+			
 			pnl_sms_l=new JPanel();
 			pnl_sms_l.setLayout(new FlowLayout(FlowLayout.LEFT,0,0));
 			pnl_sms_l.setBackground(Color.CYAN);
@@ -439,12 +441,24 @@ public class Cheif {
 			pnl_btmbtn.setBounds(10, 440, 784, 40);
 			add(pnl_btmbtn);
 			
+			JLabel lb_name = new JLabel("名称：");
+			pnl_btmbtn.add(lb_name);
+			txt_sms=new JTextField("新学期");
 			pnl_btmbtn.add(txt_sms);
+			JLabel lb_start = new JLabel("从");
+			pnl_btmbtn.add(lb_start);
+			txt_start=new JTextField("yyyy-mm-dd");
+			pnl_btmbtn.add(txt_start);
+			JLabel lb_end = new JLabel("到");
+			pnl_btmbtn.add(lb_end);
+			txt_end=new JTextField("yyyy-mm-dd");
+			pnl_btmbtn.add(txt_end);
+			
 			JButton btn_new=new JButton("新增学期");
 			btn_new.addActionListener(new ActionListener(){
 				public void actionPerformed(ActionEvent e){
 					Semester semester = db.addSemester(UUID.randomUUID().toString(), "新学期",
-			                Date.valueOf("2000-01-01"), Date.valueOf("2000-01-02"));
+			                Date.valueOf(txt_start.getText()), Date.valueOf(txt_end.getText()));
 					
 					Semester0 new_sms=new Semester0(semester);
 					sms_l.add(new_sms);
@@ -491,8 +505,11 @@ public class Cheif {
 				pnl_crs_l.setLayout(new FlowLayout(FlowLayout.LEFT,0,0));
 				pnl_crs_l.setBackground(Color.GREEN);
 				
-				txt_title=new JTextField(semester.getName());
-				txt_title.setPreferredSize(new Dimension(100, 30));
+				String title_str;
+				title_str = semester.getStartDate().toString()+"  到   "+
+						semester.getEndDate().toString() + "  " + semester.getName();
+				txt_title=new JTextField(title_str);
+				txt_title.setPreferredSize(new Dimension(300, 30));
 				txt_title.setEditable(false);
 				txt_title.addMouseListener(new MouseListener(){
 					@Override
