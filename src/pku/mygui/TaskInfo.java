@@ -137,6 +137,9 @@ public class TaskInfo extends JDialog {
 		{
 			txt_intro = new JTextPane();
 			txt_intro.setBounds(88, 150, 321, 68);
+			if (current_task!=null) {
+				txt_intro.setText(current_task.getContent());
+			}
 			contentPanel.add(txt_intro);
 		}
 		

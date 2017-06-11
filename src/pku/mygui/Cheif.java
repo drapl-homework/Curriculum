@@ -42,7 +42,7 @@ import java.util.UUID;
 import java.awt.CardLayout;
 import javax.swing.JLabel;
 import java.awt.GridLayout;
-
+import java.awt.Insets;
 import java.awt.Font;  
 import java.text.SimpleDateFormat;  
   
@@ -327,6 +327,7 @@ public class Cheif {
 				int day=courseTime.getDayOfWeek();
 				String alterWeek = alternative[courseTime.getAlternateWeek()];
 				JButton cls=new JButton("["+alterWeek+"]"+name);
+				cls.setMargin(new Insets(0, 0, 0, 0));
 				double begin_rate = 30*(courseTime.getStartHour()-8+
 						courseTime.getStartMinute()/60.0);
 				double end_rate = 30*(courseTime.getEndHour()-8+

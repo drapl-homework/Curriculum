@@ -12,6 +12,7 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
+import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -123,18 +124,25 @@ public class CourseInfo extends JDialog {
 		spl_t.setBounds(97, 190, 400, 80);
 		contentPanel.add(spl_t);
 		
-		time_cnt=1;
-		TimePanel timepanel = new TimePanel();
-		timepanelList.add(timepanel);
-		pnl_tl.add(timepanel);
-		pnl_tl.setPreferredSize(new Dimension(278,18));
+		time_cnt=0;
+		List<CourseTime> coursetimes = course.getTimes();
+		for(CourseTime coursetime:coursetimes)
+		{
+			time_cnt+=1;
+			TimePanel timepanel = new TimePanel(coursetime);
+			timepanelList.add(timepanel);
+			pnl_tl.add(timepanel);
+			pnl_tl.setPreferredSize(new Dimension(278,18*time_cnt));
+		}
+		
 		
 		JButton btn_add_time = new JButton("添加时段");
+		btn_add_time.setMargin(new Insets(0, 0, 0, 0));
 		btn_add_time.setBounds(10, 190, 74, 23);
 		btn_add_time.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e){
 				time_cnt+=1;
-				TimePanel timepanel = new TimePanel();
+				TimePanel timepanel = new TimePanel(null);
 				timepanelList.add(timepanel);
 				pnl_tl.add(timepanel);
 				pnl_tl.setPreferredSize(new Dimension(350,18*time_cnt));
@@ -161,6 +169,7 @@ public class CourseInfo extends JDialog {
 		pnl_pl.updateUI();
 		
 		JButton btn_add_pro = new JButton("添加老师");
+		btn_add_pro.setMargin(new Insets(0, 0, 0, 0));
 		btn_add_pro.setBounds(10, 280, 74, 23);
 		btn_add_pro.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e){
@@ -193,12 +202,13 @@ public class CourseInfo extends JDialog {
 		List<Task> taskList = course.getTasks();
 		tsk_cnt=taskList.size();
 		for(int i=0; i<tsk_cnt; i++){
-			pnl_pl.add(new ProPanel(teacherList.get(i)));
-			pnl_pl.setPreferredSize(new Dimension(350,18*pro_cnt));
+			pnl_kl.add(new TaskPanel(taskList.get(i)));
+			pnl_kl.setPreferredSize(new Dimension(350,18*pro_cnt));
 		}
-		pnl_pl.updateUI();
+		pnl_kl.updateUI();
 		
 		JButton btn_add_tsk = new JButton("添加任务");
+		btn_add_tsk.setMargin(new Insets(0, 0, 0, 0));
 		btn_add_tsk.setBounds(10, 370, 74, 23);
 		btn_add_tsk.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e){
@@ -237,7 +247,7 @@ public class CourseInfo extends JDialog {
 						course.setCredit(Double.parseDouble(txt_credit.getText()));
 						
 						//delete all course time and add all
-						List<CourseTime> coursetimes = course.getTimes();
+						//List<CourseTime> coursetimes = course.getTimes();
 						for(CourseTime coursetime : coursetimes)
 						{
 							course.delTime(coursetime);
@@ -297,7 +307,7 @@ public class CourseInfo extends JDialog {
 		private JComboBox comboBox;
 		private JComboBox cb_flag;
 		
-		public TimePanel(){
+		public TimePanel(CourseTime coursetime){
 			setPreferredSize(new Dimension(350, 18));
 			setLayout(null);
 			
@@ -337,6 +347,18 @@ public class CourseInfo extends JDialog {
 			comboBox.setModel(new DefaultComboBoxModel(new String[] {"一", "二", "三", "四", "五", "六", "日"}));
 			comboBox.setBounds(227, 0, 45, 18);
 			this.add(comboBox);
+			
+			if (coursetime!=null){
+				int day = coursetime.getDayOfWeek();
+				comboBox.setSelectedIndex(day);
+				int alternative = coursetime.getAlternateWeek();
+				cb_flag.setSelectedIndex(alternative);
+				String starttime = coursetime.getStartTime();
+				txt_begin.setText(starttime);
+				String endtime = coursetime.getEndTime();
+				txt_end.setText(endtime);
+						
+			}
 			
 			JButton btn_del=new JButton("x");
 			btn_del.setBounds(300, 0, 50, 18);
