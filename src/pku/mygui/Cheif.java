@@ -477,7 +477,7 @@ public class Cheif {
 			JButton btn_new=new JButton("新增学期");
 			btn_new.addActionListener(new ActionListener(){
 				public void actionPerformed(ActionEvent e){
-					Semester semester = db.addSemester(UUID.randomUUID().toString(), "新学期",
+					Semester semester = db.addSemester(UUID.randomUUID().toString(), txt_sms.getText(),
 			                Date.valueOf(txt_start.getText()), Date.valueOf(txt_end.getText()));
 					
 					Semester0 new_sms=new Semester0(semester);
