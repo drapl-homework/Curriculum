@@ -17,17 +17,10 @@ import mygui.CourseInfo.TaskPanel;
 
 import javax.swing.JButton;
 import java.awt.FlowLayout;
-import java.awt.event.ActionListener;
-import java.awt.event.FocusEvent;
-import java.awt.event.FocusListener;
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
+import java.awt.event.*;
 import java.io.File;
 import java.sql.Date;
 import java.util.Vector;
-import java.awt.event.ActionEvent;
 import javax.swing.BoxLayout;
 import javax.swing.JInternalFrame;
 import javax.swing.JLayeredPane;
@@ -237,11 +230,11 @@ public class Cheif {
 			pnl_btmbtn.setLayout(new FlowLayout(FlowLayout.LEFT,10,10));
 			pnl_btmbtn.setBounds(10, 440, width*15, 40);
 			add(pnl_btmbtn);
-			
+
 			for (Course course:courseList){
 				addClassBar(course);
 			}
-			
+
 			JButton btn_new=new JButton("新增课程");
 			btn_new.addActionListener(new ActionListener(){
 				public void actionPerformed(ActionEvent e){
@@ -252,9 +245,17 @@ public class Cheif {
 					new_crs.setVisible(true);
 					
 					///更新课表//
-					courseList=current_sms.getAllCourses();
-					System.out.println(courseList.size());
-					pnl_main.updateUI();
+					new_crs.addWindowListener(new WindowAdapter() {
+						@Override
+						public void windowClosed(WindowEvent windowEvent) {
+							super.windowClosed(windowEvent);
+							updateCourseList();
+							pnl_main.updateUI();
+						}
+					});
+//					courseList=current_sms.getAllCourses();
+//					System.out.println(courseList.size());
+//					pnl_main.updateUI();
 				}
 			});
 			pnl_btmbtn.add(btn_new);
@@ -317,7 +318,18 @@ public class Cheif {
 			});
 			pnl_taskbtn.add(btn_new_tsk);
 		}
-		
+
+		private void updateCourseList() {
+			courseList=current_sms.getAllCourses();
+			System.out.println("Course added " + courseList.size());
+		    for(int i=0; i<7; i++) {
+		    	pnl_days[i].removeAll();
+			}
+			for (Course course:courseList){
+                addClassBar(course);
+            }
+		}
+
 		void addClassBar(Course course){ 
 			String name = course.getName();
 			String[] alternative = {"每周", "单周", "双周"};
@@ -341,6 +353,13 @@ public class Cheif {
 						info_crs.setAlwaysOnTop(true);
 						info_crs.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
 						info_crs.setVisible(true);
+						info_crs.addWindowListener(new WindowAdapter() {
+							@Override
+							public void windowClosed(WindowEvent windowEvent) {
+								super.windowClosed(windowEvent);
+								updateCourseList();
+							}
+						});
 						
 						/////更新    更新不了？？？
 						pnl_main.updateUI();
