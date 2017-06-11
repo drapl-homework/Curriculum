@@ -36,7 +36,7 @@ public class TaskInfo extends JDialog {
 	private JTextPane txt_intro;
 	private JTextField txt_time;
 	
-	public Task task;
+	private Task task;
 	
 	/**
 	 * Create the dialog.
@@ -120,6 +120,9 @@ public class TaskInfo extends JDialog {
 		{
 			txt_time = new JTextField();
 			txt_time.setBounds(88, 78, 113, 15);
+			if (current_task!=null) {
+				txt_time.setText(current_task.getEndTime());
+			}
 			contentPanel.add(txt_time);
 		}
 		{
