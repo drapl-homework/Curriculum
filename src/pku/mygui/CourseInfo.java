@@ -42,6 +42,10 @@ public class CourseInfo extends JDialog {
 	private int tsk_cnt;
 	private Course course;
 	
+	private List<Teacher> teacherList;
+	private List<Task> taskList;
+	private List<CourseTime> coursetimes;
+	
 
 	/**
 	 * Create the dialog.
@@ -125,7 +129,7 @@ public class CourseInfo extends JDialog {
 		contentPanel.add(spl_t);
 		
 		time_cnt=0;
-		List<CourseTime> coursetimes = course.getTimes();
+		coursetimes = course.getTimes();
 		for(CourseTime coursetime:coursetimes)
 		{
 			time_cnt+=1;

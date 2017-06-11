@@ -136,12 +136,12 @@ public class Cheif {
 		pnl_main.add(pnl_crs, "crs");
 		
 		JPanel pnl_sms = new SemesterPanel();
-		pnl_sms.setBackground(Color.decode("#f08080"));
+		pnl_sms.setBackground(new Color(47, 79, 79));
 		pnl_main.add(pnl_sms, "sms");
 		
 		JPanel pnl_dat = new DataPanel();
+		pnl_dat.setBackground(new Color(47, 79, 79));
 		pnl_main.add(pnl_dat, "dat");
-		pnl_dat.setBackground(Color.GREEN);
 		
 		
 		JButton btn_crs = new JButton("");
@@ -224,7 +224,9 @@ public class Cheif {
 			pnl_btmbtn.setOpaque(false);
 			add(pnl_btmbtn);
 			
-			paintCourse();
+			for (Course course:courseList){
+				addClassBar(course);
+			}
 			
 			JButton btn_new=new JButton("+ 课程");
 			btn_new.setPreferredSize(new Dimension(80,25));
@@ -313,7 +315,7 @@ public class Cheif {
 
 		private void updateCourseList() {
 			courseList=current_sms.getAllCourses();
-			System.out.println("Course added " + courseList.size());
+			//System.out.println("Course added " + courseList.size());
 		    for(int i=0; i<7; i++) {
 		    	pnl_days[i].removeAll();
 			}
@@ -369,7 +371,7 @@ public class Cheif {
 							}
 						});
 						
-						/////更新    更新不了？？？
+
 						paintTask();
 						pnl_main.updateUI();
 					}
@@ -452,8 +454,8 @@ public class Cheif {
 			setLayout(null);
 			
 			pnl_sms_l=new JPanel();
-			pnl_sms_l.setLayout(new FlowLayout(FlowLayout.LEFT,0,0));
-			pnl_sms_l.setBackground(Color.CYAN);
+			pnl_sms_l.setLayout(new FlowLayout(FlowLayout.LEFT,0,2));
+			pnl_sms_l.setOpaque(false);
 			
 			sms_l = new Vector<Semester0>();
 			for(int i=0; i<semesters.size(); i++){
@@ -470,27 +472,40 @@ public class Cheif {
 			
 			JScrollPane spnl_sms = new JScrollPane(pnl_sms_l);
 			spnl_sms.setBounds(10, 10, 784, 440);
+			spnl_sms.setOpaque(false);
+			spnl_sms.getViewport().setOpaque(false);
+			spnl_sms.setBorder(null);
 			add(spnl_sms);
 			
-			JPanel pnl_btmbtn = new JPanel();
-			pnl_btmbtn.setLayout(new FlowLayout(FlowLayout.LEFT,10,10));
+			JPanel pnl_btmbtn = func.getImgPanel("addsms.png");
+			pnl_btmbtn.setLayout(new FlowLayout(FlowLayout.LEFT,10,8));
 			pnl_btmbtn.setBounds(10, 440, 784, 40);
 			add(pnl_btmbtn);
 			
 			JLabel lb_name = new JLabel("名称：");
+			lb_name.setFont(new Font("黑体",Font.BOLD,14));
+			lb_name.setForeground(Color.WHITE);
 			pnl_btmbtn.add(lb_name);
 			txt_sms=new JTextField("新学期");
 			pnl_btmbtn.add(txt_sms);
 			JLabel lb_start = new JLabel("从");
+			lb_start.setFont(new Font("黑体",Font.BOLD,14));
+			lb_start.setForeground(Color.WHITE);
 			pnl_btmbtn.add(lb_start);
 			txt_start=new JTextField("yyyy-mm-dd");
 			pnl_btmbtn.add(txt_start);
 			JLabel lb_end = new JLabel("到");
+			lb_end.setFont(new Font("黑体",Font.BOLD,14));
+			lb_end.setForeground(Color.WHITE);
 			pnl_btmbtn.add(lb_end);
 			txt_end=new JTextField("yyyy-mm-dd");
 			pnl_btmbtn.add(txt_end);
 			
-			JButton btn_new=new JButton("新增学期");
+			JButton btn_new=new JButton("+ 学期");
+			btn_new.setPreferredSize(new Dimension(80,25));
+			func.setButtonIcon(btn_new, "btn1.png", "btn2.png", "btn3.png");
+			btn_new.setFont(new Font("黑体",Font.BOLD,12));
+			btn_new.setForeground(Color.WHITE);
 			btn_new.addActionListener(new ActionListener(){
 				public void actionPerformed(ActionEvent e){
 					Semester semester = db.addSemester(UUID.randomUUID().toString(), txt_sms.getText(),
@@ -533,8 +548,8 @@ public class Cheif {
 				height=30;
 				setLayout(new FlowLayout(FlowLayout.LEFT,0,0));
 				
-				pnl_title=new JPanel();
-				pnl_title.setLayout(new FlowLayout(FlowLayout.LEFT,0,0));
+				pnl_title=func.getImgPanel("sms.png");
+				pnl_title.setLayout(null);
 				pnl_title.setPreferredSize(new Dimension(750, 30));
 				pnl_title.setBackground(Color.WHITE);
 				pnl_crs_l=new JPanel();
@@ -545,9 +560,13 @@ public class Cheif {
 				title_str = semester.getStartDate().toString()+"  到   "+
 						semester.getEndDate().toString() + "  " + semester.getName();
 				txt_title=new JTextField(title_str);
-				txt_title.setPreferredSize(new Dimension(300, 30));
+				txt_title.setBounds(10,0,300,30);
+				txt_title.setBorder(null);
+				txt_title.setOpaque(false);
+				txt_title.setFont(new Font("黑体",Font.BOLD,12));
+				txt_title.setForeground(Color.WHITE);
 				txt_title.setEditable(false);
-				txt_title.addMouseListener(new MouseListener(){
+				/*txt_title.addMouseListener(new MouseListener(){
 					@Override
 					public void mouseClicked(MouseEvent arg0) {
 						txt_title.setEditable(true);
@@ -594,10 +613,12 @@ public class Cheif {
 						//更新数据库
 					}
 					
-				});
+				});*/
 				pnl_title.add(txt_title);
 				
-				JButton title=new JButton("课表");
+				JButton title=new JButton("");
+				func.setButtonIcon(title, "2crs1.png", "2crs2.png", "2crs3.png");
+				title.setBounds(710, 0, 30, 30);
 				title.addActionListener(new ActionListener(){
 					public void actionPerformed(ActionEvent e){
 						
@@ -739,13 +760,20 @@ public class Cheif {
 			
 			pnl_dat_l=new JPanel();
 			pnl_dat_l.setLayout(new FlowLayout(FlowLayout.LEFT,0,0));
+			pnl_dat_l.setOpaque(false);
 			
 			
 			
 			//test//
+			JPanel pnl_l=func.getImgPanel("datline.png");
+			pnl_l.setPreferredSize(new Dimension(360,30));
+			pnl_l.setLayout(new FlowLayout(FlowLayout.LEFT,10,0));
 			JLabel lb_l=new JLabel("平均绩点："+Double.toString(cal_gpa(0)));
 			lb_l.setPreferredSize(new Dimension(360,30));
-			pnl_dat_l.add(lb_l);
+			lb_l.setFont(new Font("黑体",Font.BOLD,12));
+			lb_l.setForeground(Color.WHITE);
+			pnl_l.add(lb_l);
+			pnl_dat_l.add(pnl_l);
 			////////
 			for (int i=0; i<sms_cnt; i++){
 				dat_l.add(new Data(i+1));
@@ -765,6 +793,9 @@ public class Cheif {
 			
 			JScrollPane spnl_dat = new JScrollPane(pnl_dat_l);
 			spnl_dat.setBounds(10, 10, 390, 470);
+			spnl_dat.setOpaque(false);
+			spnl_dat.getViewport().setOpaque(false);
+			spnl_dat.setBorder(null);
 			add(spnl_dat);
 			
 			DefaultCategoryDataset dataset = new DefaultCategoryDataset( );
@@ -814,17 +845,16 @@ public class Cheif {
 			
 			public Data(int tl){
 				height=30;
+				setOpaque(false);
 				setLayout(new FlowLayout(FlowLayout.LEFT,0,0));
-				pnl_title=new JPanel();
+				pnl_title=func.getImgPanel("datline.png");
+				pnl_title.setOpaque(false);
 				pnl_title.setPreferredSize(new Dimension(360,30));
 				pnl_title.setLayout(new FlowLayout(FlowLayout.LEFT,0,0));
-				pnl_title.setBackground(Color.WHITE);
 				pnl_crs_l=new JPanel();
-				pnl_crs_l.setLayout(new FlowLayout(FlowLayout.LEFT,0,0));
-				pnl_crs_l.setBackground(Color.GREEN);
+				pnl_crs_l.setOpaque(false);
+				pnl_crs_l.setLayout(new FlowLayout(FlowLayout.LEFT,10,0));
 				
-				JLabel title=new JLabel(Integer.toString(tl));
-				pnl_title.add(title);
 				this.add(pnl_title);
 				this.add(pnl_crs_l);
 				
@@ -837,35 +867,44 @@ public class Cheif {
 				}
 
 				for(String c:crs){
-					JPanel pnl_clsd=new JPanel();
-					pnl_clsd.setLayout(new FlowLayout(FlowLayout.LEFT,10,0));
-					pnl_clsd.setPreferredSize(new Dimension(360, 20));
-					pnl_clsd.setBackground(Color.GREEN);
-					pnl_clsd.add(new JLabel(c));
+					JPanel pnl_clsd=func.getImgPanel("datsub.png");
+					pnl_clsd.setLayout(new FlowLayout(FlowLayout.LEFT,35,0));
+					pnl_clsd.setPreferredSize(new Dimension(350, 20));
+					pnl_clsd.setOpaque(false);
+					JLabel lb_c=new JLabel(c);
+					lb_c.setFont(new Font("黑体",Font.BOLD,12));
+					lb_c.setForeground(Color.WHITE);
+					pnl_clsd.add(lb_c);
 					pnl_crs_l.add(pnl_clsd);
 				}
 				pnl_crs_l.setPreferredSize(new Dimension(360,20*crs.size()));
 				pnl_crs_l.setVisible(false);
 				
-				JButton btn_fold=new JButton("第"+Integer.toString(tl)+"学期  "+
-							String.format("%.2f\t", cal_gpa(tl)) + "+");
+				JLabel lb_gpa=new JLabel("第"+Integer.toString(tl)+"学期  "+
+							String.format("%.2f\t", cal_gpa(tl)));
+				lb_gpa.setFont(new Font("黑体",Font.BOLD,12));
+				lb_gpa.setForeground(Color.WHITE);
+				JButton btn_fold=new JButton("");
+				btn_fold.setPreferredSize(new Dimension(30,30));
+				func.setButtonIcon(btn_fold, "+1.png", "+2.png", "+1.png");
 				btn_fold.addActionListener(new ActionListener(){
 					public void actionPerformed(ActionEvent e){
 						if(pnl_crs_l.isVisible()){
 							pnl_crs_l.setVisible(false);
 							height=30;
 							paintSmsList();
-							btn_fold.setText("+");
+							func.setButtonIcon(btn_fold, "+1.png", "+2.png", "+1.png");
 						}
 						else{
 							pnl_crs_l.setVisible(true);
 							height=30+20*crs.size();
 							paintSmsList();
-							btn_fold.setText("-");
+							func.setButtonIcon(btn_fold, "-1.png", "-2.png", "-1.png");
 						}
 					}
 				});
 				pnl_title.add(btn_fold);
+				pnl_title.add(lb_gpa);
 				setVisible(true);
 			}
 		}
