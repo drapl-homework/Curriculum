@@ -93,6 +93,6 @@ public class func {
 	}
 	
 	static public Color getColor(){
-		return clr[cpoint++];
+		return clr[cpoint++%clr.length];
 	}
 }

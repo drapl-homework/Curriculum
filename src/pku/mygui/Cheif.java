@@ -55,6 +55,10 @@ public class Cheif {
 	private JFrame frame;
 	private CardLayout card;
 	private JPanel pnl_main;
+	private JPanel pnl_crs;
+	private JPanel pnl_sms;
+	private JPanel pnl_dat;
+	
 	
 	// 获取学期和课程
 	String databaseFile = "data.sqlite";
@@ -70,7 +74,7 @@ public class Cheif {
     
     
     
-    Semester current_sms = semesters.get(0);
+    Semester current_sms = semesters.get(semesters.size()-1);
 	List<Course> courseList=current_sms.getAllCourses();
 	
 	/**
@@ -131,15 +135,15 @@ public class Cheif {
 		frame.getContentPane().add(pnl_main);
 		pnl_main.setLayout(card);
 		
-		JPanel pnl_crs = new CoursePanel();
+		pnl_crs = new CoursePanel();
 		pnl_crs.setBackground(new Color(47, 79, 79));
 		pnl_main.add(pnl_crs, "crs");
 		
-		JPanel pnl_sms = new SemesterPanel();
+		pnl_sms = new SemesterPanel();
 		pnl_sms.setBackground(new Color(47, 79, 79));
 		pnl_main.add(pnl_sms, "sms");
 		
-		JPanel pnl_dat = new DataPanel();
+		pnl_dat = new DataPanel();
 		pnl_dat.setBackground(new Color(47, 79, 79));
 		pnl_main.add(pnl_dat, "dat");
 		
@@ -624,7 +628,12 @@ public class Cheif {
 						
 						//////need update//////
 						current_sms = semester;
-						card.show(pnl_main,"crs");
+						courseList=current_sms.getAllCourses();		
+						pnl_main.remove(pnl_crs);
+						pnl_crs=new CoursePanel();
+						pnl_crs.setBackground(new Color(47, 79, 79));
+						pnl_main.add(pnl_crs, "crs");
+						card.show(pnl_main, "crs");
 						pnl_main.updateUI();
 					}
 				});
