@@ -195,6 +195,9 @@ public class Cheif {
 		func.setButtonIcon(btn_dat, "dat1.png", "dat2.png", "dat1.png");
 		btn_dat.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e){
+				pnl_dat = new DataPanel();
+				pnl_dat.setBackground(new Color(47, 79, 79));
+				pnl_main.add(pnl_dat, "dat");
 				card.show(pnl_main,"dat");
 				}
 			});
@@ -649,7 +652,7 @@ public class Cheif {
 						//////need update//////
 						current_sms = semester;
 						courseList=current_sms.getAllCourses();		
-						pnl_main.remove(pnl_crs);
+						//pnl_main.remove(pnl_crs);
 						pnl_crs=new CoursePanel();
 						pnl_crs.setBackground(new Color(47, 79, 79));
 						pnl_main.add(pnl_crs, "crs");
