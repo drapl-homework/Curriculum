@@ -21,7 +21,6 @@ import javax.swing.JDialog;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
-import mygui.Cheif.CoursePanel.TaskPanel;
 import mygui.CourseAdd.TimePanel;
 
 import javax.swing.JLabel;
