@@ -120,7 +120,7 @@ public class CourseInfo extends JDialog {
 		
 		
 		pnl_tl=new JPanel();
-		pnl_tl.setBackground(Color.CYAN);
+		pnl_tl.setBackground(new Color(176, 226, 255));
 		pnl_tl.setLayout(new FlowLayout(FlowLayout.LEFT,0,0));
 		
 		JScrollPane spl_t = new JScrollPane(pnl_tl);
@@ -156,7 +156,7 @@ public class CourseInfo extends JDialog {
 		
 		
 		pnl_pl=new JPanel();
-		pnl_pl.setBackground(Color.YELLOW);
+		pnl_pl.setBackground(new Color(255, 220, 130));
 		pnl_pl.setLayout(new FlowLayout(FlowLayout.LEFT,0,0));
 		
 		JScrollPane spl_p = new JScrollPane(pnl_pl);
@@ -191,7 +191,7 @@ public class CourseInfo extends JDialog {
 		contentPanel.add(btn_add_pro);
 		
 		pnl_kl=new JPanel();
-		pnl_kl.setBackground(Color.ORANGE);
+		pnl_kl.setBackground(new Color(216, 191, 216));
 		pnl_kl.setLayout(new FlowLayout(FlowLayout.LEFT,0,0));
 		
 		JScrollPane spl_k = new JScrollPane(pnl_kl);

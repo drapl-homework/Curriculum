@@ -55,7 +55,7 @@ public class CourseAdd extends JDialog {
 		txt_title.setColumns(10);
 		
 		pnl_tl=new JPanel();
-		pnl_tl.setBackground(Color.CYAN);
+		pnl_tl.setBackground(new Color(176, 226, 255));
 		pnl_tl.setLayout(new FlowLayout(FlowLayout.LEFT,0,0));
 		
 		JScrollPane spl_t = new JScrollPane(pnl_tl);

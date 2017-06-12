@@ -77,11 +77,11 @@ public class CourseTime {
     }
 
     public String getStartTime() {
-        return String.format("%s:%s", this.startHour, this.startMinute);
+        return String.format("%s:%02d", this.startHour, this.startMinute);
     }
 
     public String getEndTime() {
-        return String.format("%s:%s", this.endHour, this.endMinute);
+        return String.format("%s:%02d", this.endHour, this.endMinute);
     }
 
     @Override

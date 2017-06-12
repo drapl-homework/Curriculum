@@ -377,9 +377,9 @@ public class Chief {
 				cls.setMargin(new Insets(0, 0, 0, 0));
 				cls.setBackground(c);
 				cls.setBorder(null);
-				double begin_rate = 30*(courseTime.getStartHour()-8+
+				double begin_rate = 400/14.0*(courseTime.getStartHour()-8+
 						courseTime.getStartMinute()/60.0);
-				double end_rate = 30*(courseTime.getEndHour()-8+
+				double end_rate = 400/14.0*(courseTime.getEndHour()-8+
 						courseTime.getEndMinute()/60.0);
 				
 				cls.setBounds(2, (int)(begin_rate), width*2-4, (int)(end_rate-begin_rate));
