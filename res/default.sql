@@ -12,7 +12,7 @@ CREATE TABLE semester (
   end   DATE
 );
 
-INSERT INTO semester (id, name, start, end) VALUES ("s00", "000", "1992-01-01", "1993-06-01");
+INSERT INTO semester (id, name, start, end) VALUES ("s00", "2016秋", "2016-09-12", "2017-01-15");
 
 CREATE TABLE course (
   id          VARCHAR(36) PRIMARY KEY,
